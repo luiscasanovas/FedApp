@@ -1,24 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CalendarView from './components/CalendarView';
+import DailyLogView from './components/DailyLogView';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Define route to capture day, month, and year */}
+        <Route path="/" element={<CalendarView />} />
+        <Route path="/log/:day/:month/:year" element={<DailyLogView />} />
+      </Routes>
+    </Router>
   );
 }
 
