@@ -1,94 +1,214 @@
+/* Color Palette */
+:root {
+  --amethyst: #8E79B7;
+  --african-violet: #9C89C0;
+  --magnolia: #F8EDFB;
+  --cool-gray: #A0A0B1;
+  --african-violet-2: #927FBA;
+  --wisteria: #AA98CA;
+}
+
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--magnolia);
+}
 
 .App {
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* Calendar Styles */
+.calendar-container {
+  background-color: var(--magnolia);
+  border-radius: 20px;
+  padding: 30px;
+  width: 400px;
+  margin: 50px auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.calendar-title {
+  color: var(--african-violet);
+  margin-bottom: 20px;
+}
+
+.calendar-box {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar {
+  border: none;
+  width: 100%;
+}
+
+.react-calendar__tile {
+  background-color: var(--magnolia);
+  color: var(--cool-gray);
+  border-radius: 10px;
+}
+
+.react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+  background-color: var(--african-violet);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.react-calendar__tile--active {
+  background-color: var(--african-violet-2);
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.react-calendar__navigation button {
+  color: var(--african-violet-2);
 }
 
-.log-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
+.react-calendar__navigation button:enabled:hover {
+  background-color: var(--wisteria);
+  color: white;
 }
 
-.log-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  max-width: 400px;
-  margin: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.react-calendar__month-view__days__day--weekend {
+  color: var(--african-violet-2);
 }
 
-.log-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
-  max-width: 400px;
-  margin: auto;
+.react-calendar__tile--now {
+  background-color: var(--wisteria);
+  color: white;
 }
 
+/* Button Styles (General) */
 button {
-  max-width: 400px;
-  margin: 20px auto;
-  display: block;
-}
-
-
-.log-form label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: #495057;
-}
-
-button {
-  background-color: #007bff;
+  margin-top: 20px;
+  background-color: var(--african-violet);
+  border: none;
   color: white;
   padding: 10px;
-  border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: var(--african-violet-2);
 }
 
-.react-calendar__tile {
-  color: #000 !important; 
+/* Specific Button Styles */
+.calendar-btn {
+  margin-top: 20px;
+  background-color: var(--african-violet);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
 }
 
-.react-calendar__tile--active {
-  background-color: #007bff;
-  color: #fff; 
+.calendar-btn:hover {
+  background-color: var(--african-violet-2);
 }
 
-.react-calendar__month-view__days__day--weekend {
-  color: red !important; 
+.login-btn {
+  background-color: var(--african-violet);
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: var(--african-violet-2);
+}
+
+/* Log Cards */
+.logs-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.log-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.log-card p {
+  margin: 5px 0;
+}
+
+.logs-container h2 {
+  color: var(--african-violet);
+  margin-bottom: 20px;
+}
+
+/* Login and Signup Specific Styles */
+.login-container, .signup-container {
+  background-color: var(--magnolia);
+  border-radius: 20px;
+  padding: 30px;
+  width: 350px;
+  margin: 50px auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-box, .signup-box {
+  background-color: var(--magnolia);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--cool-gray);
+  border-radius: 8px;
+  background-color: white;
+  font-size: 16px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--african-violet-2);
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.remember-me input {
+  margin: 0;
+}
+
+/* Footer Links */
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.footer-links a {
+  color: var(--african-violet-2);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
 }

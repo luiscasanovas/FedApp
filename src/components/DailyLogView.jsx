@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { db, auth } from '../firebase';
 
 const DailyLogView = () => {
   const { day, month, year } = useParams();
-  const date = `${day}/${month}/${year}`;
   const docId = `${year}-${month}-${day}`;
   const [logs, setLogs] = useState([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isFormVisible, setIsFormVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const docRef = doc(db, 'dailyLogs', docId);
+    const fetchLogs = async () => {
+      const userId = auth.currentUser?.uid;
+      if (!userId) return;
 
-    const unsubscribe = onSnapshot(docRef, (doc) => {
-      if (doc.exists()) {
-        setLogs(doc.data().logs || []);
-      } else {
-        console.log('No such document!');
-      }
-      setLoading(false);
-    });
+      const docRef = doc(db, `users/${userId}/dailyLogs/${docId}`);
+      
+      const unsubscribe = onSnapshot(docRef, (doc) => {
+        if (doc.exists()) {
+          setLogs(doc.data().logs || []);
+        } else {
+          console.log('No such document!');
+        }
+        setLoading(false);
+      });
 
-    return () => unsubscribe();
+      return () => {
+        unsubscribe(); // Clean up the listener when the component unmounts or the user logs out
+      };
+    };
+
+    fetchLogs();
   }, [docId]);
-
-  const addLog = async (newLog) => {
-    const updatedLogs = [...logs, newLog];
-    await setDoc(doc(db, 'dailyLogs', docId), { logs: updatedLogs });
-    setLogs(updatedLogs);
-    setIsFormVisible(false);
-  };
 
   const handleAddLog = async (event) => {
     event.preventDefault();
@@ -53,12 +54,13 @@ const DailyLogView = () => {
       comments,
     };
 
-    await addLog(newLog);
-    event.target.reset();
-  };
+    const userId = auth.currentUser?.uid;
+    const docRef = doc(db, `users/${userId}/dailyLogs/${docId}`);
 
-  const handleAddNewLog = () => {
-    setIsFormVisible(true);
+    const updatedLogs = [...logs, newLog];
+    await setDoc(docRef, { logs: updatedLogs });
+    setLogs(updatedLogs);
+    setIsFormVisible(false);
   };
 
   const handleBackClick = () => {
@@ -71,33 +73,30 @@ const DailyLogView = () => {
 
   return (
     <div>
-      <h2>Logs for {date}</h2>
-
-      <div className="log-cards">
-        {logs.length > 0 ? (
-          logs.map((log, index) => (
-            <div key={index} className="log-card">
-              <p><strong>Start Time:</strong> {log.startTime}</p>
-              <p><strong>End Time:</strong> {log.endTime}</p>
-              <p><strong>Quantity:</strong> {log.quantity} ml</p>
-              <p><strong>Breast Milk:</strong> Left: {log.breastMilk.left} min, Right: {log.breastMilk.right} min</p>
-              <p><strong>Depositions:</strong> {log.depositions}</p>
-              <p><strong>Comments:</strong> {log.comments}</p>
-            </div>
-          ))
-        ) : (
-          <p>No logs yet. Add the first entry!</p>
-        )}
-      </div>
+      <h2>Logs for {`${day}/${month}/${year}`}</h2>
+      {logs.length > 0 ? (
+        logs.map((log, index) => (
+          <div key={index} className="log-card">
+            <p><strong>Start Time:</strong> {log.startTime}</p>
+            <p><strong>End Time:</strong> {log.endTime}</p>
+            <p><strong>Quantity:</strong> {log.quantity} ml</p>
+            <p><strong>Breast Milk:</strong> Left: {log.breastMilk.left} min, Right: {log.breastMilk.right} min</p>
+            <p><strong>Depositions:</strong> {log.depositions}</p>
+            <p><strong>Comments:</strong> {log.comments}</p>
+          </div>
+        ))
+      ) : (
+        <p>No logs yet. Add the first entry!</p>
+      )}
 
       {logs.length === 0 || isFormVisible ? (
-        <form onSubmit={handleAddLog} className="log-form">
+        <form onSubmit={handleAddLog}>
           <label>Start Time: <input type="time" name="startTime" required /></label>
           <label>End Time: <input type="time" name="endTime" required /></label>
           <label>Quantity (ml): <input type="number" name="quantity" required /></label>
           <label>Breast Milk Left (min): <input type="number" name="breastMilkLeft" /></label>
           <label>Breast Milk Right (min): <input type="number" name="breastMilkRight" /></label>
-          <label>Depositions:
+          <label>Depositions: 
             <select name="depositions">
               <option value="pee">Pee</option>
               <option value="poop">Poop</option>
@@ -105,13 +104,12 @@ const DailyLogView = () => {
             </select>
           </label>
           <label>Comments: <textarea name="comments"></textarea></label>
-          <button type="submit" className="btn btn-primary">Add Log</button>
+          <button type="submit">Add Log</button>
         </form>
       ) : (
-        <button onClick={handleAddNewLog} className="btn btn-secondary mt-3">Add Entry</button>
+        <button onClick={() => setIsFormVisible(true)}>Add Entry</button>
       )}
-
-      <button onClick={handleBackClick} className="btn btn-secondary mt-3">Back</button>
+      <button onClick={handleBackClick}>Back</button>
     </div>
   );
 };
