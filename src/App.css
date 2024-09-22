@@ -1,6 +1,4 @@
-/* App.css */
 
-/* Overall App Styles */
 .App {
   text-align: center;
 }
@@ -29,7 +27,6 @@
   }
 }
 
-/* Log Cards Styling */
 .log-cards {
   display: flex;
   flex-direction: column;
@@ -47,7 +44,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Log Form Styling */
 .log-form {
   display: flex;
   flex-direction: column;
@@ -56,6 +52,13 @@
   max-width: 400px;
   margin: auto;
 }
+
+button {
+  max-width: 400px;
+  margin: 20px auto;
+  display: block;
+}
+
 
 .log-form label {
   display: flex;
@@ -75,4 +78,17 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.react-calendar__tile {
+  color: #000 !important; 
+}
+
+.react-calendar__tile--active {
+  background-color: #007bff;
+  color: #fff; 
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: red !important; 
 }

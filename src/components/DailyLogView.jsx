@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { doc, setDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase'; // Firebase Firestore
+import { db } from '../firebase';
 
 const DailyLogView = () => {
   const { day, month, year } = useParams();
   const date = `${day}/${month}/${year}`;
-  const docId = `${year}-${month}-${day}`; // Use yyyy-mm-dd as the document ID for Firestore
-
+  const docId = `${year}-${month}-${day}`;
   const [logs, setLogs] = useState([]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const docRef = doc(db, "dailyLogs", docId);
+    const docRef = doc(db, 'dailyLogs', docId);
 
-    // Real-time listener for Firestore data
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
-        setLogs(doc.data().logs);
+        setLogs(doc.data().logs || []);
       } else {
-        console.log("No such document!");
+        console.log('No such document!');
       }
+      setLoading(false);
     });
 
-    return () => unsubscribe(); // Clean up listener on component unmount
+    return () => unsubscribe();
   }, [docId]);
 
   const addLog = async (newLog) => {
     const updatedLogs = [...logs, newLog];
-    await setDoc(doc(db, "dailyLogs", docId), { logs: updatedLogs });
-    setLogs(updatedLogs); // Update local state
+    await setDoc(doc(db, 'dailyLogs', docId), { logs: updatedLogs });
+    setLogs(updatedLogs);
+    setIsFormVisible(false);
   };
 
   const handleAddLog = async (event) => {
@@ -36,8 +39,8 @@ const DailyLogView = () => {
     const startTime = event.target.startTime.value;
     const endTime = event.target.endTime.value;
     const quantity = event.target.quantity.value;
-    const breastMilkLeft = event.target.breastMilkLeft.value || "0";
-    const breastMilkRight = event.target.breastMilkRight.value || "0";
+    const breastMilkLeft = event.target.breastMilkLeft.value || 'N/A';
+    const breastMilkRight = event.target.breastMilkRight.value || 'N/A';
     const depositions = event.target.depositions.value;
     const comments = event.target.comments.value;
 
@@ -45,52 +48,70 @@ const DailyLogView = () => {
       startTime,
       endTime,
       quantity,
-      breastMilk: {
-        left: breastMilkLeft,
-        right: breastMilkRight,
-      },
+      breastMilk: { left: breastMilkLeft, right: breastMilkRight },
       depositions,
       comments,
     };
 
     await addLog(newLog);
-    event.target.reset(); // Clear the form after submission
+    event.target.reset();
   };
 
+  const handleAddNewLog = () => {
+    setIsFormVisible(true);
+  };
+
+  const handleBackClick = () => {
+    navigate('/');
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="container">
+    <div>
       <h2>Logs for {date}</h2>
+
       <div className="log-cards">
-        {logs.map((log, index) => (
-          <div key={index} className="log-card card">
-            <div className="card-body">
+        {logs.length > 0 ? (
+          logs.map((log, index) => (
+            <div key={index} className="log-card">
               <p><strong>Start Time:</strong> {log.startTime}</p>
               <p><strong>End Time:</strong> {log.endTime}</p>
-              <p><strong>Quantity:</strong> {log.quantity}</p>
-              <p><strong>Breast Milk:</strong> Left: {log.breastMilk?.left || "N/A"} min, Right: {log.breastMilk?.right || "N/A"} min</p>
+              <p><strong>Quantity:</strong> {log.quantity} ml</p>
+              <p><strong>Breast Milk:</strong> Left: {log.breastMilk.left} min, Right: {log.breastMilk.right} min</p>
               <p><strong>Depositions:</strong> {log.depositions}</p>
               <p><strong>Comments:</strong> {log.comments}</p>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No logs yet. Add the first entry!</p>
+        )}
       </div>
 
-      <form onSubmit={handleAddLog} className="log-form">
-        <label>Start Time: <input type="time" name="startTime" className="form-control" required /></label>
-        <label>End Time: <input type="time" name="endTime" className="form-control" required /></label>
-        <label>Quantity (ml): <input type="number" name="quantity" className="form-control" required /></label>
-        <label>Breast Milk Left (min): <input type="number" name="breastMilkLeft" className="form-control" /></label>
-        <label>Breast Milk Right (min): <input type="number" name="breastMilkRight" className="form-control" /></label>
-        <label>Depositions: 
-          <select name="depositions" className="form-control">
-            <option value="pee">Pee</option>
-            <option value="poop">Poop</option>
-            <option value="both">Both</option>
-          </select>
-        </label>
-        <label>Comments: <textarea name="comments" className="form-control"></textarea></label>
-        <button type="submit" className="btn btn-primary">Add Log</button>
-      </form>
+      {logs.length === 0 || isFormVisible ? (
+        <form onSubmit={handleAddLog} className="log-form">
+          <label>Start Time: <input type="time" name="startTime" required /></label>
+          <label>End Time: <input type="time" name="endTime" required /></label>
+          <label>Quantity (ml): <input type="number" name="quantity" required /></label>
+          <label>Breast Milk Left (min): <input type="number" name="breastMilkLeft" /></label>
+          <label>Breast Milk Right (min): <input type="number" name="breastMilkRight" /></label>
+          <label>Depositions:
+            <select name="depositions">
+              <option value="pee">Pee</option>
+              <option value="poop">Poop</option>
+              <option value="both">Both</option>
+            </select>
+          </label>
+          <label>Comments: <textarea name="comments"></textarea></label>
+          <button type="submit" className="btn btn-primary">Add Log</button>
+        </form>
+      ) : (
+        <button onClick={handleAddNewLog} className="btn btn-secondary mt-3">Add Entry</button>
+      )}
+
+      <button onClick={handleBackClick} className="btn btn-secondary mt-3">Back</button>
     </div>
   );
 };
