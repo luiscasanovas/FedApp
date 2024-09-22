@@ -71,7 +71,7 @@ const Login = ({ setIsAuthenticated }) => {
           <button type="submit" className="btn login-btn">Login</button>
         </form>
         <div className="footer-links">
-          <Link to="/signup">Signup</Link> {/* Corrected Link to SignUp */}
+          <Link to="/signup">Signup</Link> 
           <Link to="/forgot-password">Forgot Password?</Link>
         </div>
       </div>

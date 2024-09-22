@@ -8,7 +8,6 @@
   --wisteria: #AA98CA;
 }
 
-/* General Styles */
 body {
   font-family: 'Arial', sans-serif;
   background-color: var(--magnolia);
@@ -18,7 +17,6 @@ body {
   text-align: center;
 }
 
-/* Calendar Styles */
 .calendar-container {
   background-color: var(--magnolia);
   border-radius: 20px;
@@ -80,7 +78,6 @@ body {
   color: white;
 }
 
-/* Button Styles (General) */
 button {
   margin-top: 20px;
   background-color: var(--african-violet);
@@ -95,7 +92,6 @@ button:hover {
   background-color: var(--african-violet-2);
 }
 
-/* Specific Button Styles */
 .calendar-btn {
   margin-top: 20px;
   background-color: var(--african-violet);
@@ -123,7 +119,6 @@ button:hover {
   background-color: var(--african-violet-2);
 }
 
-/* Log Cards */
 .logs-container {
   margin-top: 20px;
   text-align: left;
@@ -146,7 +141,6 @@ button:hover {
   margin-bottom: 20px;
 }
 
-/* Login and Signup Specific Styles */
 .login-container, .signup-container {
   background-color: var(--magnolia);
   border-radius: 20px;
@@ -185,8 +179,9 @@ button:hover {
   right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
+  font-size: 1.2em;
+  color: #333; 
 }
-
 .remember-me {
   display: flex;
   align-items: center;
@@ -197,7 +192,6 @@ button:hover {
   margin: 0;
 }
 
-/* Footer Links */
 .footer-links {
   display: flex;
   justify-content: space-between;

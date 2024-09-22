@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth, db } from '../firebase'; // Import Firebase auth and db
+import { auth, db } from '../firebase'; 
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,10 +11,9 @@ const BabyForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const userId = auth.currentUser.uid; // Get the logged-in user's ID
-    const userDocRef = doc(db, `users/${userId}`); // Reference to the user doc
+    const userId = auth.currentUser.uid; 
+    const userDocRef = doc(db, `users/${userId}`); 
 
-    // Save baby info to Firestore
     await setDoc(userDocRef, {
       babyInfo: {
         name,
@@ -22,7 +21,6 @@ const BabyForm = () => {
       },
     }, { merge: true });
 
-    // Redirect to CalendarView after saving
     navigate('/');
   };
 

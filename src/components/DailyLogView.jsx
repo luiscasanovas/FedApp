@@ -28,7 +28,7 @@ const DailyLogView = () => {
       });
 
       return () => {
-        unsubscribe(); // Clean up the listener when the component unmounts or the user logs out
+        unsubscribe(); 
       };
     };
 

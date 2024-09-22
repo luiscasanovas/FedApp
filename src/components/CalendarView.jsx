@@ -15,11 +15,11 @@ const CalendarView = () => {
 
   useEffect(() => {
     const fetchBabyInfo = async () => {
-      const userId = auth.currentUser?.uid; // Ensure currentUser is available
+      const userId = auth.currentUser?.uid; 
 
       if (!userId) {
         console.error('No user is logged in.');
-        return; // Don't proceed if the user is not authenticated
+        return; 
       }
 
       try {
@@ -45,8 +45,8 @@ const CalendarView = () => {
       const userId = auth.currentUser?.uid;
       if (!userId) return;
 
-      const day = ('0' + selectedDate.getDate()).slice(-2); // Add leading 0 if needed
-      const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2); // Month is zero-based, so add 1
+      const day = ('0' + selectedDate.getDate()).slice(-2); 
+      const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2); 
       const year = selectedDate.getFullYear();
       const docId = `${year}-${month}-${day}`;
 
@@ -61,7 +61,7 @@ const CalendarView = () => {
       });
 
       return () => {
-        unsubscribe(); // Clean up the listener when the component unmounts
+        unsubscribe(); 
       };
     };
 
@@ -74,7 +74,7 @@ const CalendarView = () => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    setBabyName(null); // Clear baby name state on logout
+    setBabyName(null); 
     navigate('/login');
   };
 
@@ -94,7 +94,6 @@ const CalendarView = () => {
     />
   </div>
 
-      {/* Display Logs for the Selected Day */}
       <div className="logs-container">
         <h2>Logs for {selectedDate.toLocaleDateString()}</h2>
         {logs.length > 0 ? (

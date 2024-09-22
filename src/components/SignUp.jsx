@@ -22,7 +22,6 @@ const SignUp = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const userId = userCredential.user.uid;
 
-      // Save email and baby info in Firestore
       const userDocRef = doc(db, `users/${userId}`);
       await setDoc(userDocRef, {
         email,
