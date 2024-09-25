@@ -64,23 +64,28 @@ const SignUp = () => {
               placeholder="email@address.com"
             />
           </div>
-          <div className="form-group" style={{ position: 'relative' }}>
+
+          {/* Password field using Flexbox */}
+          <div className="form-group">
             <label>Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="••••••••"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle-icon"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle-icon"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
+
           <div className="form-group mt-3">
             <label>Baby's Name</label>
             <input

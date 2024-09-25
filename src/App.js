@@ -4,13 +4,13 @@ import './App.css';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import CalendarView from './components/CalendarView';
-import DailyLogView from './components/DailyLogView'; // Import the DailyLogView component
+import DailyLogView from './components/DailyLogView';
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BabyForm from './components/BabyForm'; // Correct import path for BabyForm
+import BabyForm from './components/BabyForm';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -56,7 +56,7 @@ function App() {
           {!isAuthenticated ? (
             <>
               <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path="/signup" element={<SignUp />} /> {/* Fix here for the correct signup path */}
+              <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<Navigate to="/login" />} />
             </>
           ) : (
@@ -66,7 +66,7 @@ function App() {
               ) : (
                 <>
                   <Route path="/" element={<CalendarView />} />
-                  <Route path="/log/:day/:month/:year" element={<DailyLogView />} /> {/* Add this route */}
+                  <Route path="/log/:day/:month/:year" element={<DailyLogView />} /> {/* Route for DailyLogView */}
                 </>
               )}
               <Route path="*" element={<Navigate to="/" />} />

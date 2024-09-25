@@ -74,9 +74,11 @@ body {
 }
 
 .react-calendar__tile--now {
-  background-color: var(--wisteria);
-  color: white;
+  background-color: var(--african-violet); 
+  color: black; 
 }
+
+
 
 button {
   margin-top: 20px;
@@ -105,6 +107,7 @@ button:hover {
 .calendar-btn:hover {
   background-color: var(--african-violet-2);
 }
+
 
 .login-btn {
   background-color: var(--african-violet);
@@ -153,14 +156,28 @@ button:hover {
 .login-box, .signup-box {
   background-color: var(--magnolia);
 }
+.logo {
+  width: 100px;
+  margin: 20px auto;
+  display: block;
+  text-align: center;
+}
 
 .form-group {
   margin-bottom: 20px;
+}
+.password-wrapper {
+  display: flex; /* Make the wrapper a flex container */
+  align-items: center; /* Align items vertically center */
   position: relative;
 }
-
+.password-wrapper input.form-control {
+  flex: 1; /* Allow the input to grow and take available space */
+  padding-right: 40px; /* Make space for the icon inside the input */
+}
 .form-control {
   width: 100%;
+  padding-right: 40px; /* Ensure space for the icon */
   padding: 10px;
   border: 1px solid var(--cool-gray);
   border-radius: 8px;
@@ -174,13 +191,10 @@ button:hover {
 }
 
 .password-toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+  margin-left: -35px; /* Move the icon to the left inside the input */
   cursor: pointer;
   font-size: 1.2em;
-  color: #333; 
+  color: #333;
 }
 .remember-me {
   display: flex;

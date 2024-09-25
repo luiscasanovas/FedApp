@@ -17,7 +17,7 @@ const DailyLogView = () => {
       if (!userId) return;
 
       const docRef = doc(db, `users/${userId}/dailyLogs/${docId}`);
-      
+
       const unsubscribe = onSnapshot(docRef, (doc) => {
         if (doc.exists()) {
           setLogs(doc.data().logs || []);
@@ -28,7 +28,7 @@ const DailyLogView = () => {
       });
 
       return () => {
-        unsubscribe(); 
+        unsubscribe();
       };
     };
 
@@ -72,44 +72,67 @@ const DailyLogView = () => {
   }
 
   return (
-    <div>
-      <h2>Logs for {`${day}/${month}/${year}`}</h2>
-      {logs.length > 0 ? (
-        logs.map((log, index) => (
-          <div key={index} className="log-card">
-            <p><strong>Start Time:</strong> {log.startTime}</p>
-            <p><strong>End Time:</strong> {log.endTime}</p>
-            <p><strong>Quantity:</strong> {log.quantity} ml</p>
-            <p><strong>Breast Milk:</strong> Left: {log.breastMilk.left} min, Right: {log.breastMilk.right} min</p>
-            <p><strong>Depositions:</strong> {log.depositions}</p>
-            <p><strong>Comments:</strong> {log.comments}</p>
-          </div>
-        ))
-      ) : (
-        <p>No logs yet. Add the first entry!</p>
-      )}
+    <div className="container mt-5">
+      <div className="card p-4 shadow-sm">
+        <h2 className="text-center mb-4">Logs for {`${day}/${month}/${year}`}</h2>
 
-      {logs.length === 0 || isFormVisible ? (
-        <form onSubmit={handleAddLog}>
-          <label>Start Time: <input type="time" name="startTime" required /></label>
-          <label>End Time: <input type="time" name="endTime" required /></label>
-          <label>Quantity (ml): <input type="number" name="quantity" required /></label>
-          <label>Breast Milk Left (min): <input type="number" name="breastMilkLeft" /></label>
-          <label>Breast Milk Right (min): <input type="number" name="breastMilkRight" /></label>
-          <label>Depositions: 
-            <select name="depositions">
-              <option value="pee">Pee</option>
-              <option value="poop">Poop</option>
-              <option value="both">Both</option>
-            </select>
-          </label>
-          <label>Comments: <textarea name="comments"></textarea></label>
-          <button type="submit">Add Log</button>
-        </form>
-      ) : (
-        <button onClick={() => setIsFormVisible(true)}>Add Entry</button>
-      )}
-      <button onClick={handleBackClick}>Back</button>
+        {logs.length > 0 ? (
+          logs.map((log, index) => (
+            <div key={index} className="log-card mb-4 p-3 bg-light border rounded">
+              <p><strong>Start Time:</strong> {log.startTime}</p>
+              <p><strong>End Time:</strong> {log.endTime}</p>
+              <p><strong>Quantity:</strong> {log.quantity} ml</p>
+              <p><strong>Breast Milk:</strong> Left: {log.breastMilk.left} min, Right: {log.breastMilk.right} min</p>
+              <p><strong>Depositions:</strong> {log.depositions}</p>
+              <p><strong>Comments:</strong> {log.comments}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-muted">No logs yet. Add the first entry!</p>
+        )}
+
+        {logs.length === 0 || isFormVisible ? (
+          <form onSubmit={handleAddLog} className="mt-4">
+            <div className="form-group mb-3">
+              <label>Start Time</label>
+              <input type="time" name="startTime" className="form-control" required />
+            </div>
+            <div className="form-group mb-3">
+              <label>End Time</label>
+              <input type="time" name="endTime" className="form-control" required />
+            </div>
+            <div className="form-group mb-3">
+              <label>Quantity (ml)</label>
+              <input type="number" name="quantity" className="form-control" required />
+            </div>
+            <div className="form-group mb-3">
+              <label>Breast Milk Left (min)</label>
+              <input type="number" name="breastMilkLeft" className="form-control" />
+            </div>
+            <div className="form-group mb-3">
+              <label>Breast Milk Right (min)</label>
+              <input type="number" name="breastMilkRight" className="form-control" />
+            </div>
+            <div className="form-group mb-3">
+              <label>Depositions</label>
+              <select name="depositions" className="form-control">
+                <option value="pee">Pee</option>
+                <option value="poop">Poop</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+            <div className="form-group mb-3">
+              <label>Comments</label>
+              <textarea name="comments" className="form-control"></textarea>
+            </div>
+            <button type="submit" className="btn btn-primary w-100">Add Log</button>
+          </form>
+        ) : (
+          <button onClick={() => setIsFormVisible(true)} className="btn btn-secondary w-100 mt-4">Add Entry</button>
+        )}
+
+        <button onClick={handleBackClick} className="btn btn-danger w-100 mt-3">Back</button>
+      </div>
     </div>
   );
 };

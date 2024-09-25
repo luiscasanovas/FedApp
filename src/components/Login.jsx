@@ -42,23 +42,26 @@ const Login = ({ setIsAuthenticated }) => {
               placeholder="Username@gmail.com"
             />
           </div>
-          <div className="form-group" style={{ position: 'relative' }}>
-            <label>Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="form-control"
-              placeholder="••••••••"
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle-icon"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
+          <div className="form-group">
+  <label>Password</label>
+  <div className="password-wrapper">
+    <input
+      type={showPassword ? 'text' : 'password'}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      className="form-control"
+      placeholder="••••••••"
+    />
+    <span
+      onClick={() => setShowPassword(!showPassword)}
+      className="password-toggle-icon"
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </span>
+  </div>
+</div>
+
           <div className="form-group remember-me">
             <input
               type="checkbox"

@@ -9,17 +9,71 @@ import { signOut } from 'firebase/auth';
 const CalendarView = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [babyName, setBabyName] = useState(null);
+  const [babyBirthday, setBabyBirthday] = useState(null);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const calculateBabyAge = (birthDate, selectedDate) => {
+  if (!birthDate) return '';
+
+  const [day, month, year] = birthDate.split('/');
+  const birth = new Date(`${year}-${month}-${day}`);
+  const selected = new Date(selectedDate);
+
+  // Normalize the time part to avoid time zone issues
+  birth.setHours(0, 0, 0, 0);
+  selected.setHours(0, 0, 0, 0);
+
+  // If the selected date is before the birth date, return "wasn't born yet"
+  if (selected < birth) {
+    return `${babyName} wasn't born yet`;
+  }
+
+  // If the selected date is the day the baby was born, show "Welcome to the world"
+  if (selected.getTime() === birth.getTime()) {
+    return `Welcome to the world ${babyName}!`;
+  }
+
+  // If the selected date is the exact birthday in future years, show "Happy Birthday"
+  if (selected.getDate() === birth.getDate() && selected.getMonth() === birth.getMonth()) {
+    if (selected.getFullYear() !== birth.getFullYear()) {
+      return `Happy Birthday ${babyName}!`;
+    }
+  }
+
+  const diffTime = selected - birth;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  let years = Math.floor(diffDays / 365);
+  let remainingDays = diffDays % 365;
+  let months = Math.floor(remainingDays / 30);
+  let days = remainingDays % 30;
+
+  // Construct the age string, omitting parameters with a value of 0
+  let ageString = '';
+
+  if (years > 0) {
+    ageString += `${years} ${years === 1 ? 'year' : 'years'}`;
+  }
+  if (months > 0) {
+    if (ageString) ageString += ', ';
+    ageString += `${months} ${months === 1 ? 'month' : 'months'}`;
+  }
+  if (days > 0) {
+    if (ageString) ageString += ' and ';
+    ageString += `${days} ${days === 1 ? 'day' : 'days'}`;
+  }
+
+  return ageString ? `${babyName} is ${ageString} old` : `${babyName} is 0 days old`; 
+};
+
   useEffect(() => {
     const fetchBabyInfo = async () => {
-      const userId = auth.currentUser?.uid; 
-
+      const userId = auth.currentUser?.uid;
       if (!userId) {
         console.error('No user is logged in.');
-        return; 
+        return;
       }
 
       try {
@@ -29,6 +83,7 @@ const CalendarView = () => {
         if (userDocSnap.exists()) {
           const babyInfo = userDocSnap.data().babyInfo;
           setBabyName(babyInfo?.name || 'Baby');
+          setBabyBirthday(babyInfo?.birthday); // Ensure the birthday is correctly set
         }
         setLoading(false);
       } catch (error) {
@@ -45,13 +100,13 @@ const CalendarView = () => {
       const userId = auth.currentUser?.uid;
       if (!userId) return;
 
-      const day = ('0' + selectedDate.getDate()).slice(-2); 
-      const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2); 
+      const day = ('0' + selectedDate.getDate()).slice(-2);
+      const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
       const year = selectedDate.getFullYear();
       const docId = `${year}-${month}-${day}`;
 
       const docRef = doc(db, `users/${userId}/dailyLogs/${docId}`);
-      
+
       const unsubscribe = onSnapshot(docRef, (doc) => {
         if (doc.exists()) {
           setLogs(doc.data().logs || []);
@@ -61,7 +116,7 @@ const CalendarView = () => {
       });
 
       return () => {
-        unsubscribe(); 
+        unsubscribe();
       };
     };
 
@@ -74,8 +129,15 @@ const CalendarView = () => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    setBabyName(null); 
+    setBabyName(null);
     navigate('/login');
+  };
+
+  const handleAddEntry = () => {
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const year = selectedDate.getFullYear();
+    navigate(`/log/${day}/${month}/${year}`); // Redirect to DailyLogView with selected date
   };
 
   if (loading) {
@@ -84,18 +146,21 @@ const CalendarView = () => {
 
   return (
     <div className="calendar-container">
-  <h1 className="calendar-title">{babyName ? `${babyName}'s Daily Tracker` : "Baby's Daily Tracker"}</h1>
-  <div className="calendar-box">
-    <Calendar
-      onChange={onDateChange}
-      value={selectedDate}
-      locale="en-US"
-      className="react-calendar"
-    />
-  </div>
+      <h1 className="calendar-title">{babyName ? `${babyName}'s Daily Tracker` : "Baby's Daily Tracker"}</h1>
+      <div className="calendar-box">
+        <Calendar
+          onChange={onDateChange}
+          value={selectedDate}
+          locale="en-US"
+          className="react-calendar"
+        />
+      </div>
 
+      {/* Baby's age calculated dynamically based on the selected date */}
       <div className="logs-container">
-        <h2>Logs for {selectedDate.toLocaleDateString()}</h2>
+        <h2>
+          {babyName && babyBirthday ? `${calculateBabyAge(babyBirthday, selectedDate)}` : ''}
+        </h2>
         {logs.length > 0 ? (
           logs.map((log, index) => (
             <div key={index} className="log-card">
@@ -112,6 +177,8 @@ const CalendarView = () => {
         )}
       </div>
 
+      {/* Add Entry Button to navigate to DailyLogView */}
+      <button onClick={handleAddEntry} className="btn btn-primary mt-3">Add Entry</button>
       <button onClick={handleLogout} className="btn btn-danger mt-3">Logout</button>
     </div>
   );
