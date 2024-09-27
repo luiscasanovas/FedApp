@@ -4,7 +4,8 @@ import './App.css';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import CalendarView from './components/CalendarView';
-import DailyLogView from './components/DailyLogView';
+import FeedingForm from './components/FeedingForm';
+import SleepingForm from './components/SleepingForm'; 
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -66,7 +67,8 @@ function App() {
               ) : (
                 <>
                   <Route path="/" element={<CalendarView />} />
-                  <Route path="/log/:day/:month/:year" element={<DailyLogView />} /> 
+                  <Route path="/log/:day/:month/:year" element={<FeedingForm />} /> 
+                  <Route path="/sleep/:day/:month/:year" element={<SleepingForm />} /> {/* Add SleepingForm route */}
                 </>
               )}
               <Route path="*" element={<Navigate to="/" />} />

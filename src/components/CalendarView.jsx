@@ -15,53 +15,53 @@ const CalendarView = () => {
   const navigate = useNavigate();
 
   const calculateBabyAge = (birthDate, selectedDate) => {
-  if (!birthDate) return '';
+    if (!birthDate) return '';
 
-  const [day, month, year] = birthDate.split('/');
-  const birth = new Date(`${year}-${month}-${day}`);
-  const selected = new Date(selectedDate);
+    const [day, month, year] = birthDate.split('/');
+    const birth = new Date(`${year}-${month}-${day}`);
+    const selected = new Date(selectedDate);
 
-  birth.setHours(0, 0, 0, 0);
-  selected.setHours(0, 0, 0, 0);
+    birth.setHours(0, 0, 0, 0);
+    selected.setHours(0, 0, 0, 0);
 
-  if (selected < birth) {
-    return `${babyName} wasn't born yet`;
-  }
-
-  if (selected.getTime() === birth.getTime()) {
-    return `Welcome to the world ${babyName}!`;
-  }
-
-  if (selected.getDate() === birth.getDate() && selected.getMonth() === birth.getMonth()) {
-    if (selected.getFullYear() !== birth.getFullYear()) {
-      return `Happy Birthday ${babyName}!`;
+    if (selected < birth) {
+      return `${babyName} wasn't born yet`;
     }
-  }
 
-  const diffTime = selected - birth;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    if (selected.getTime() === birth.getTime()) {
+      return `Welcome to the world ${babyName}!`;
+    }
 
-  let years = Math.floor(diffDays / 365);
-  let remainingDays = diffDays % 365;
-  let months = Math.floor(remainingDays / 30);
-  let days = remainingDays % 30;
+    if (selected.getDate() === birth.getDate() && selected.getMonth() === birth.getMonth()) {
+      if (selected.getFullYear() !== birth.getFullYear()) {
+        return `Happy Birthday ${babyName}!`;
+      }
+    }
 
-  let ageString = '';
+    const diffTime = selected - birth;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (years > 0) {
-    ageString += `${years} ${years === 1 ? 'year' : 'years'}`;
-  }
-  if (months > 0) {
-    if (ageString) ageString += ', ';
-    ageString += `${months} ${months === 1 ? 'month' : 'months'}`;
-  }
-  if (days > 0) {
-    if (ageString) ageString += ' and ';
-    ageString += `${days} ${days === 1 ? 'day' : 'days'}`;
-  }
+    let years = Math.floor(diffDays / 365);
+    let remainingDays = diffDays % 365;
+    let months = Math.floor(remainingDays / 30);
+    let days = remainingDays % 30;
 
-  return ageString ? `${babyName} is ${ageString} old` : `${babyName} is 0 days old`; 
-};
+    let ageString = '';
+
+    if (years > 0) {
+      ageString += `${years} ${years === 1 ? 'year' : 'years'}`;
+    }
+    if (months > 0) {
+      if (ageString) ageString += ', ';
+      ageString += `${months} ${months === 1 ? 'month' : 'months'}`;
+    }
+    if (days > 0) {
+      if (ageString) ageString += ' and ';
+      ageString += `${days} ${days === 1 ? 'day' : 'days'}`;
+    }
+
+    return ageString ? `${babyName} is ${ageString} old` : `${babyName} is 0 days old`;
+  };
 
   useEffect(() => {
     const fetchBabyInfo = async () => {
@@ -78,7 +78,7 @@ const CalendarView = () => {
         if (userDocSnap.exists()) {
           const babyInfo = userDocSnap.data().babyInfo;
           setBabyName(babyInfo?.name || 'Baby');
-          setBabyBirthday(babyInfo?.birthday); 
+          setBabyBirthday(babyInfo?.birthday);
         }
         setLoading(false);
       } catch (error) {
@@ -132,7 +132,14 @@ const CalendarView = () => {
     const day = ('0' + selectedDate.getDate()).slice(-2);
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
     const year = selectedDate.getFullYear();
-    navigate(`/log/${day}/${month}/${year}`); 
+    navigate(`/log/${day}/${month}/${year}`);
+  };
+
+  const handleAddSleepLog = () => {
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const year = selectedDate.getFullYear();
+    navigate(`/sleep/${day}/${month}/${year}`); // Navigate to SleepingForm route
   };
 
   if (loading) {
@@ -171,7 +178,8 @@ const CalendarView = () => {
         )}
       </div>
 
-      <button onClick={handleAddEntry} className="btn btn-primary mt-3">Add Entry</button>
+      <button onClick={handleAddEntry} className="btn login-btn">Add Feeding Log</button>
+      <button onClick={handleAddSleepLog} className="btn login-btn">Add Sleep Log</button>
       <button onClick={handleLogout} className="btn btn-danger mt-3">Logout</button>
     </div>
   );

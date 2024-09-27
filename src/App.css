@@ -1,24 +1,26 @@
-/* Color Palette */
+/* Neutral Color Palette */
 :root {
-  --amethyst: #8E79B7;
-  --african-violet: #9C89C0;
-  --magnolia: #F8EDFB;
-  --cool-gray: #A0A0B1;
-  --african-violet-2: #927FBA;
-  --wisteria: #AA98CA;
+  --slate-gray: #7A8C99;
+  --khaki: #C9B896;
+  --beaver: #B38B6D;
+  --lemon-chiffon: #ECEBBD;
+  --lemon-chiffon-2: #ECEBBD;
 }
 
+/* General Body Styling */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: var(--magnolia);
+  background-color: var(--lemon-chiffon);
 }
 
+/* App Container */
 .App {
   text-align: center;
 }
 
+/* Calendar Styling */
 .calendar-container {
-  background-color: var(--magnolia);
+  background-color: var(--lemon-chiffon);
   border-radius: 20px;
   padding: 30px;
   width: 400px;
@@ -28,7 +30,7 @@ body {
 }
 
 .calendar-title {
-  color: var(--african-violet);
+  color: var(--slate-gray);
   margin-bottom: 20px;
 }
 
@@ -45,44 +47,43 @@ body {
 }
 
 .react-calendar__tile {
-  background-color: var(--magnolia);
-  color: var(--cool-gray);
+  background-color: var(--lemon-chiffon);
+  color: var(--slate-gray);
   border-radius: 10px;
 }
 
 .react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
-  background-color: var(--african-violet);
+  background-color: var(--khaki);
   color: white;
 }
 
 .react-calendar__tile--active {
-  background-color: var(--african-violet-2);
+  background-color: var(--beaver);
   color: white;
 }
 
 .react-calendar__navigation button {
-  color: var(--african-violet-2);
+  color: var(--slate-gray);
 }
 
 .react-calendar__navigation button:enabled:hover {
-  background-color: var(--wisteria);
+  background-color: var(--beaver);
   color: white;
 }
 
 .react-calendar__month-view__days__day--weekend {
-  color: var(--african-violet-2);
+  color: var(--khaki);
 }
 
 .react-calendar__tile--now {
-  background-color: var(--african-violet); 
+  background-color: var(--khaki); 
   color: black; 
 }
 
-
-
+/* Button Styling */
 button {
   margin-top: 20px;
-  background-color: var(--african-violet);
+  background-color: var(--slate-gray);
   border: none;
   color: white;
   padding: 10px;
@@ -91,12 +92,12 @@ button {
 }
 
 button:hover {
-  background-color: var(--african-violet-2);
+  background-color: var(--beaver);
 }
 
 .calendar-btn {
   margin-top: 20px;
-  background-color: var(--african-violet);
+  background-color: var(--slate-gray);
   border: none;
   padding: 10px;
   border-radius: 10px;
@@ -105,12 +106,12 @@ button:hover {
 }
 
 .calendar-btn:hover {
-  background-color: var(--african-violet-2);
+  background-color: var(--beaver);
 }
 
-
+/* Login Button Styling */
 .login-btn {
-  background-color: var(--african-violet);
+  background-color: var(--slate-gray);
   padding: 10px;
   width: 100%;
   border-radius: 10px;
@@ -119,9 +120,10 @@ button:hover {
 }
 
 .login-btn:hover {
-  background-color: var(--african-violet-2);
+  background-color: var(--beaver);
 }
 
+/* Logs Container Styling */
 .logs-container {
   margin-top: 20px;
   text-align: left;
@@ -140,12 +142,13 @@ button:hover {
 }
 
 .logs-container h2 {
-  color: var(--african-violet);
+  color: var(--slate-gray);
   margin-bottom: 20px;
 }
 
+/* Login and Signup Containers */
 .login-container, .signup-container {
-  background-color: var(--magnolia);
+  background-color: var(--lemon-chiffon);
   border-radius: 20px;
   padding: 30px;
   width: 350px;
@@ -154,8 +157,9 @@ button:hover {
 }
 
 .login-box, .signup-box {
-  background-color: var(--magnolia);
+  background-color: var(--lemon-chiffon-2);
 }
+
 .logo {
   width: 100px;
   margin: 20px auto;
@@ -163,23 +167,28 @@ button:hover {
   text-align: center;
 }
 
+/* Form Group Styling */
 .form-group {
   margin-bottom: 20px;
 }
+
+/* Password Wrapper */
 .password-wrapper {
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   position: relative;
 }
+
 .password-wrapper input.form-control {
-  flex: 1; 
+  flex: 1;
   padding-right: 40px;
 }
+
 .form-control {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 40px;
   padding: 10px;
-  border: 1px solid var(--cool-gray);
+  border: 1px solid var(--slate-gray);
   border-radius: 8px;
   background-color: white;
   font-size: 16px;
@@ -187,15 +196,17 @@ button:hover {
 
 .form-control:focus {
   outline: none;
-  border-color: var(--african-violet-2);
+  border-color: var(--beaver);
 }
 
 .password-toggle-icon {
-  margin-left: -35px; 
+  margin-left: -35px;
   cursor: pointer;
   font-size: 1.2em;
   color: #333;
 }
+
+/* Remember Me Checkbox */
 .remember-me {
   display: flex;
   align-items: center;
@@ -206,6 +217,7 @@ button:hover {
   margin: 0;
 }
 
+/* Footer Links */
 .footer-links {
   display: flex;
   justify-content: space-between;
@@ -213,10 +225,28 @@ button:hover {
 }
 
 .footer-links a {
-  color: var(--african-violet-2);
+  color: var(--slate-gray);
   text-decoration: none;
 }
 
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+/* Back button styling */
+.back-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--slate-gray);
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.back-btn:hover {
+  color: var(--beaver);
+}
+
+.back-btn svg {
+  font-size: 2rem; 
 }
