@@ -167,17 +167,17 @@ button:hover {
   margin-bottom: 20px;
 }
 .password-wrapper {
-  display: flex; /* Make the wrapper a flex container */
-  align-items: center; /* Align items vertically center */
+  display: flex; 
+  align-items: center; 
   position: relative;
 }
 .password-wrapper input.form-control {
-  flex: 1; /* Allow the input to grow and take available space */
-  padding-right: 40px; /* Make space for the icon inside the input */
+  flex: 1; 
+  padding-right: 40px;
 }
 .form-control {
   width: 100%;
-  padding-right: 40px; /* Ensure space for the icon */
+  padding-right: 40px; 
   padding: 10px;
   border: 1px solid var(--cool-gray);
   border-radius: 8px;
@@ -191,7 +191,7 @@ button:hover {
 }
 
 .password-toggle-icon {
-  margin-left: -35px; /* Move the icon to the left inside the input */
+  margin-left: -35px; 
   cursor: pointer;
   font-size: 1.2em;
   color: #333;

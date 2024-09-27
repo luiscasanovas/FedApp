@@ -66,7 +66,7 @@ function App() {
               ) : (
                 <>
                   <Route path="/" element={<CalendarView />} />
-                  <Route path="/log/:day/:month/:year" element={<DailyLogView />} /> {/* Route for DailyLogView */}
+                  <Route path="/log/:day/:month/:year" element={<DailyLogView />} /> 
                 </>
               )}
               <Route path="*" element={<Navigate to="/" />} />

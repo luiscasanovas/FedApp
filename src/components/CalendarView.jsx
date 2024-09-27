@@ -21,21 +21,17 @@ const CalendarView = () => {
   const birth = new Date(`${year}-${month}-${day}`);
   const selected = new Date(selectedDate);
 
-  // Normalize the time part to avoid time zone issues
   birth.setHours(0, 0, 0, 0);
   selected.setHours(0, 0, 0, 0);
 
-  // If the selected date is before the birth date, return "wasn't born yet"
   if (selected < birth) {
     return `${babyName} wasn't born yet`;
   }
 
-  // If the selected date is the day the baby was born, show "Welcome to the world"
   if (selected.getTime() === birth.getTime()) {
     return `Welcome to the world ${babyName}!`;
   }
 
-  // If the selected date is the exact birthday in future years, show "Happy Birthday"
   if (selected.getDate() === birth.getDate() && selected.getMonth() === birth.getMonth()) {
     if (selected.getFullYear() !== birth.getFullYear()) {
       return `Happy Birthday ${babyName}!`;
@@ -50,7 +46,6 @@ const CalendarView = () => {
   let months = Math.floor(remainingDays / 30);
   let days = remainingDays % 30;
 
-  // Construct the age string, omitting parameters with a value of 0
   let ageString = '';
 
   if (years > 0) {
@@ -83,7 +78,7 @@ const CalendarView = () => {
         if (userDocSnap.exists()) {
           const babyInfo = userDocSnap.data().babyInfo;
           setBabyName(babyInfo?.name || 'Baby');
-          setBabyBirthday(babyInfo?.birthday); // Ensure the birthday is correctly set
+          setBabyBirthday(babyInfo?.birthday); 
         }
         setLoading(false);
       } catch (error) {
@@ -137,7 +132,7 @@ const CalendarView = () => {
     const day = ('0' + selectedDate.getDate()).slice(-2);
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
     const year = selectedDate.getFullYear();
-    navigate(`/log/${day}/${month}/${year}`); // Redirect to DailyLogView with selected date
+    navigate(`/log/${day}/${month}/${year}`); 
   };
 
   if (loading) {
@@ -156,7 +151,6 @@ const CalendarView = () => {
         />
       </div>
 
-      {/* Baby's age calculated dynamically based on the selected date */}
       <div className="logs-container">
         <h2>
           {babyName && babyBirthday ? `${calculateBabyAge(babyBirthday, selectedDate)}` : ''}
@@ -177,7 +171,6 @@ const CalendarView = () => {
         )}
       </div>
 
-      {/* Add Entry Button to navigate to DailyLogView */}
       <button onClick={handleAddEntry} className="btn btn-primary mt-3">Add Entry</button>
       <button onClick={handleLogout} className="btn btn-danger mt-3">Logout</button>
     </div>
